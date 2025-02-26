@@ -4,7 +4,6 @@ import { DurationBar } from "../DurationBar/DurationBar";
 
 export const SpanRow = ({
   span,
-  parentSpan,
   rootSpan,
 }: {
   span: Span;
@@ -12,21 +11,13 @@ export const SpanRow = ({
   rootSpan: Span | null;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const parenSpanDuration = parentSpan
-    ? parentSpan.endTime.getTime() - parentSpan.startTime.getTime()
-    : null;
-  const parenSpanStarTime = parentSpan ? parentSpan.startTime : null;
-
-  const rootSpanDuration = rootSpan
-    ? rootSpan.endTime.getTime() - rootSpan.startTime.getTime()
-    : null;
-  const rootSpanStarTime = rootSpan ? rootSpan.startTime : null;
+  const isExpandable = span.spans && span.spans.length > 0;
 
   return (
     <div>
       <div
         style={{
-          cursor: "pointer",
+          cursor: isExpandable ? "pointer" : "",
           display: "flex",
           outline: "1px solid black",
         }}
@@ -34,6 +25,7 @@ export const SpanRow = ({
           setIsExpanded(true);
         }}
       >
+        {isExpandable && <div>{isExpanded ? "V" : ">"}</div>}
         <div
           style={{
             width: "300px",
